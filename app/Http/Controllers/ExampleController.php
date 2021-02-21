@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produto;
+
 class ExampleController extends Controller
 {
     /**
@@ -18,5 +20,15 @@ class ExampleController extends Controller
     {
         return app()->version();
     }
-    //
+    
+    public function getTeste()
+    {
+        $produto = Produto::create([
+            'controleexterno' => 123,
+            'nome' => 'Toalha de banho'
+        ]);
+
+        dd($produto);
+    }
+
 }

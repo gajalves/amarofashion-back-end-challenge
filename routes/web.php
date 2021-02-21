@@ -16,3 +16,4 @@ use App\Http\Controllers\ExampleController;
 */
 
 $router->get('/', 'ExampleController@getWelcome');
+$router->get('/Teste', 'ExampleController@getTeste');
