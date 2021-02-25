@@ -17,3 +17,8 @@ use App\Http\Controllers\ExampleController;
 
 $router->get('/', 'ExampleController@getWelcome');
 $router->get('/Teste', 'ExampleController@getTeste');
+
+$router->get('/produtos', 'ProdutoController@getProdutos');
+$router->post('/produtos', 'ProdutoController@postProdutos');
+
+
