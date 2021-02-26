@@ -45,7 +45,7 @@ class ProdutoRepository
 
             if ($produtoExiste) 
             {
-                //continue;
+                continue;
             }
 
            $model = $this->model->create([
@@ -53,9 +53,10 @@ class ProdutoRepository
                 'controleexterno' => $produto['id']
             ]);
 
-            $tagsIds = $this->getTagsId($produto['tags']);
-
-            dump($tagsIds);
+            
+            $tagsIds = $this->getTagsId($produto['tags']);            
+            $model->tags()->sync($tagsIds);
+            
         }
         
         return [];

@@ -18,7 +18,7 @@ class ProdutoController extends Controller
      
     public function getProdutos() 
     {
-        $produto = Produto::paginate(15);
+        $produto = Produto::with('tags')->paginate(15);
 
         return response()->json($produto);
     }

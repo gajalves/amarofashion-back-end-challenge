@@ -13,4 +13,13 @@ class Produto extends Model
         'controleexterno',
         'nome'
     ];
+
+    public function tags() {
+        return $this->belongsToMany(
+            Tag::class,
+            'produto_tags',
+            'produto_id',
+            'tag_id'
+        );
+    }
 }
