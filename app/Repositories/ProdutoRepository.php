@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Models\Produto;
 use App\Models\Tag;
+use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
 
 class ProdutoRepository 
@@ -16,8 +17,13 @@ class ProdutoRepository
         $this->model = new Produto();
     }   
 
-    public function criaProduto(UploadedFile $file) : array
-    {
+    public function criaProduto(array $produto) {
+                
+        return $this->novoProduto($produto);
+    }
+
+    public function criaProdutos(UploadedFile $file) : array
+    {        
         $mime = $file->getClientOriginalExtension();
         
         if ($mime == "json") 
@@ -64,55 +70,47 @@ class ProdutoRepository
     }
 
     private function handleProdutos(array $produtos) 
-    {
-        
+    {        
         foreach($produtos as $produto) 
         {            
             $produtoExiste = $this->model->where('controleexterno', $produto['id'])->first();
 
             if ($produtoExiste) 
             {
-                //continue;
+                continue;
             }
 
-           $model = $this->model->create([
-                'nome' => $produto['name'],
-                'controleexterno' => $produto['id']
-            ]);
-
-            
-            $tagsIds = $this->getTagsId($produto['tags']);            
-            $model->tags()->sync($tagsIds);
+           $this->novoProduto($produto);
             
         }
     }
-
-    public function getTagsId(array $tagNames) : array 
+    
+    private function novoProduto(array $produto) : Produto
     {
-        $result = [];
-        foreach($tagNames as $tag) 
-        {
-            $model = Tag::where('nome', $tag)->first();
+        $model = $this->model->create([
+            'nome' => $produto['name'],
+            'controleexterno' => $produto['id']
+        ]);
 
-            if ($model) 
-            {
-                $result[] = $model->id;
-                continue;
-            }
-            else 
-            {
-                $model = Tag::create([
-                    'nome' => $tag
-                ]);
+        
+        $tagsIds = app(TagRepository::class)->getTagsId($produto['tags']);            
+        $model->tags()->sync($tagsIds);
 
-                //validar o model de criação
+        return $model;
+    }  
+    
+    public function updateProduto(int $controleexterno, array $data ) 
+    {
+        $model = $this->model->where('controleexterno', $controleexterno)->first();
 
+        $model->update($data);
 
-                $result[] = $model->id;
-            }
-        }
-
-        return $result;
+        return $model;        
+    }
+    
+    public function deleteProduto(int $controleexterno)
+    {
+        $this->model->where('controleexterno', $controleexterno)->delete();
     }
 }
 

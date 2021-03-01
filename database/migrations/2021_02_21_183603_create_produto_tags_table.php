@@ -14,8 +14,8 @@ class CreateProdutoTagsTable extends Migration
     public function up()
     {
         Schema::create('produto_tags', function (Blueprint $table) {
-            $table->foreignId('produto_id')->references('id')->on('produtos');
-            $table->foreignId('tag_id')->references('id')->on('tags');
+            $table->foreignId('produto_id')->references('id')->on('produtos')->onDelete('cascade');
+            $table->foreignId('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 

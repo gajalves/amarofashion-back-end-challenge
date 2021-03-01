@@ -19,6 +19,13 @@ $router->get('/', 'ExampleController@getWelcome');
 $router->get('/Teste', 'ExampleController@getTeste');
 
 $router->get('/produtos', 'ProdutoController@getProdutos');
+$router->get('/produto/{controleexterno}', 'ProdutoController@getProdutoByControleExterno');
+
+$router->post('/produto', 'ProdutoController@postProduto');
 $router->post('/produtos', 'ProdutoController@postProdutos');
+
+$router->put('/produto/{controleexterno}', 'ProdutoController@putProduto');
+
+$router->delete('/produto/{controleexterno}', 'ProdutoController@deleteProduto');
 
 
